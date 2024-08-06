@@ -1,7 +1,9 @@
 const express = require("express");
 const app = express();
 const { v4 } = require("uuid");
-const PORT = 4000;
+const cors = require("cors");
+const PORT = process.env.Port || 4000;
+
 let movies = [
   {
     id: "99",
@@ -112,6 +114,7 @@ let movies = [
     id: "109",
   },
 ];
+app.use(cors());
 app.get("/home", function (request, response) {
   response.send("🙋‍♂️, 🌏 🎊✨🤩");
 });
@@ -149,9 +152,9 @@ app.put("/movies/:id", express.json(), function (request, response) {
   if (movieIdx >= 0) {
     movies[movieIdx] = { ...movies[movieIdx], ...data };
     response.send(movies[movieIdx]);
+  } else {
+    response.status(404).send("error");
   }
-
-  res.send(movie);
 });
 
 app.listen(PORT, () => console.log(`The server started in: ${PORT} 💀☠️ ⚡`));
